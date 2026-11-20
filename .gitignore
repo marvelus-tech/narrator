@@ -1,0 +1,12 @@
+node_modules
+.next
+data
+.env
+.env.local
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+coverage
+tsconfig.tsbuildinfo
+.DS_Store
