@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 export const metadata = pageMeta("billing");
 
-export default async function BillingPage({ searchParams }: { searchParams: Promise<{ checkout?: string }> }) {
+export default async function BillingPage({ searchParams }: { searchParams: Promise<{ checkout?: string; portal?: string }> }) {
   const user = await currentUser();
   if (!user) redirect(routes.login);
   const query = await searchParams;
@@ -23,6 +23,7 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
       {query.checkout === "success" ? <p className="panel">Checkout returned. Credits appear when the signed webhook is processed.</p> : null}
       {query.checkout === "cancel" ? <p className="panel">Checkout was canceled. No credits were added.</p> : null}
       {query.checkout === "demo" ? <p className="panel">Demo checkout updated the ledger.</p> : null}
+      {query.portal === "demo" ? <p className="panel">Demo mode has no Stripe customer portal. The plan and the credit buckets on this page are the source of truth.</p> : null}
       <BillingPanel
         buckets={buckets.map((bucket) => ({
           id: bucket.id,

@@ -62,6 +62,10 @@ Set `TRUST_PROXY=1` only behind a proxy you operate. Narrator still does not bui
 
 ffmpeg is optional. Without it, silent assembly returns `render_unavailable` and zip download still works.
 
+## Advisories
+
+Next 15.5.29 pulls PostCSS 8.4.31. That copy matched `GHSA-qx2v-qp2m-jg93`, `GHSA-6g55-p6wh-862q`, `GHSA-fxqj-rqcc-2cmp`, and `GHSA-r28c-9q8g-f849`. `npm audit fix` would jump Next to 16.4.6, a major upgrade, so that was not applied. `package.json` overrides `postcss` to 8.5.33, the patched 8.x release Vite already used. After the override, `npm audit` reports 0 vulnerabilities. Rebuild so the production CSS pipeline uses the same copy.
+
 ## Tests
 
 `npm test` covers credit rounding, reserve/capture/refund, plan-before-pack spend, expiry, Stripe idempotency, signature checks, the shot workflow, free-tier video limits, route registration, and metadata length. Provider tests stay on the mock adapter.
