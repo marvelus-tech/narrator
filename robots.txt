@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /
+Disallow: /app
+Disallow: /api
+
+Host: https://marvelus-tech.github.io/narrator
+Sitemap: https://marvelus-tech.github.io/narrator/sitemap.xml
