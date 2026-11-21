@@ -17,7 +17,7 @@ function stillSvg(input: GenerateInput): Buffer {
   const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   <rect width="100%" height="100%" fill="#1c1916"/>
-  <text x="32" y="64" fill="#c8f0dc" font-family="Georgia, serif" font-size="28">Narrator still</text>
+  <text x="32" y="64" fill="#c8f0dc" font-family="Georgia, serif" font-size="28">NR8R still</text>
   <text x="32" y="120" fill="#f3efe6" font-family="Georgia, serif" font-size="18">${text}</text>
 </svg>`;
   return Buffer.from(svg, "utf8");

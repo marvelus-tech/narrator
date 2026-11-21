@@ -1,6 +1,6 @@
-# Narrator
+# NR8R
 
-Narrator turns one film brief into an editable shot list, then prices each still and clip before a credit moves.
+NR8R turns one film brief into an editable shot list, then prices each still and clip before a credit moves.
 
 A credit has a face value of $0.05. Quotes use a 1.25 markup on the provider cost and round up to 0.1 credit. Monthly plan credits expire at the end of the paid period. Pack credits do not expire. Failed jobs return the hold. A finished file you dislike stays charged.
 
@@ -14,9 +14,9 @@ This is a new product. It keeps the useful ideas from an MIT film desk (a shot p
 - Approve a still, a 480p draft, or a 720p finish. Jobs run in the background.
 - Download a file, a zip, or a silent cut when `ffmpeg` is installed.
 - Subscribe to Starter ($15 / 240), Maker ($29 / 500), or Studio ($59 / 1090), buy packs, and open the Stripe customer portal.
-- Optionally publish to Drive, Dropbox, or social through Composio on Maker and Studio. That path does not price a generation.
+- Optionally connect Drive, Dropbox, YouTube, X, and TikTok through Composio. Drive and Dropbox are on every plan. YouTube, X, and TikTok publish on Maker and Studio. That path does not price a generation.
 
-Mock mode is the default. Missing provider, Stripe, email, and Composio secrets do not block local use.
+Local ffmpeg stills and H.264 clips are the default. Set `NARRATOR_PROVIDER=mock` for the sample adapter used by tests. Missing Stripe, email, and Composio secrets do not block local use. Stripe checkout works with only `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`.
 
 ## Setup
 
@@ -49,7 +49,9 @@ npm test
 npm run build
 ```
 
-The app is a Next.js server with one SQLite file. Run it as a long-lived Node process (`next start` or the standalone server). A separate cron can `POST /api/internal/tick` with `Authorization: Bearer $JOB_TICK_SECRET`.
+The app is a Next.js server. It uses SQLite until `DATABASE_URL` is set, then Postgres. `cursor-app.json` asks Cursor Hosting for Postgres, and `npm run build` applies `migrations/`. A separate cron can `POST /api/internal/tick` with `Authorization: Bearer $JOB_TICK_SECRET`.
+
+`NEXT_PUBLIC_BASE_PATH=/narrator npm run build:pages` writes the static GitHub Pages site to `out/`.
 
 ## Plans
 

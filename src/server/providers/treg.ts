@@ -1,3 +1,4 @@
+import { TREG_ORIGIN, assertApiUrl, assertDownloadUrl } from "../hosts";
 import type { GenerateInput, GenerateOutput, MediaProvider } from "./types";
 
 // A small Treg client. One POST starts a catalog call. Async results are polled.
@@ -15,7 +16,7 @@ type TregReply = {
 };
 
 function baseUrl(): string {
-  return (process.env.TREG_BASE_URL || "https://treg.to").replace(/\/+$/, "");
+  return TREG_ORIGIN;
 }
 
 async function readCapped(res: Response, maxBytes: number): Promise<Buffer> {
@@ -66,6 +67,7 @@ async function parseReply(res: Response): Promise<TregReply> {
 }
 
 async function tregFetch(url: string, init: RequestInit): Promise<TregReply> {
+  assertApiUrl(url);
   const res = await fetch(url, { ...init, redirect: "error", signal: AbortSignal.timeout(180_000) });
   return parseReply(res);
 }
@@ -89,6 +91,7 @@ function mediaFromJson(json: unknown): { url: string } | null {
 }
 
 async function downloadUrl(url: string): Promise<{ bytes: Buffer; mime: string }> {
+  assertDownloadUrl(url);
   const res = await fetch(url, { redirect: "error", signal: AbortSignal.timeout(60_000) });
   if (!res.ok) throw new Error("provider_download");
   const bytes = await readCapped(res, 32_000_000);

@@ -3,6 +3,7 @@ import { creditsToMilli, PLANS } from "@/shared/economy";
 import { ApiError } from "./errors";
 import { grantCredits } from "./credits";
 import { withTx } from "./db";
+import { AUTH_FLAG } from "@/shared/auth-flag";
 import { hashPassword, newId, randomToken, revealVerificationLink, sha256, siteUrl, verifyPassword } from "./ids";
 import { hitRateLimit, rateIdentity } from "./rate";
 
@@ -87,6 +88,33 @@ export function clearSessionCookie(): string {
   return `narrator_session=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${cookieSecure()}`;
 }
 
+export function authFlagCookie(on: boolean): string {
+  const secure = cookieSecure();
+  if (!on) return `${AUTH_FLAG}=; Path=/; Max-Age=0; SameSite=Lax${secure}`;
+  return `${AUTH_FLAG}=1; Path=/; Max-Age=${Math.floor(SESSION_MS / 1000)}; SameSite=Lax${secure}`;
+}
+
+export function connectCookie(on: boolean): string {
+  const secure = cookieSecure();
+  if (!on) return `nr8r_connect=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax${secure}`;
+  return `nr8r_connect=1; HttpOnly; Path=/; Max-Age=${24 * 60 * 60}; SameSite=Lax${secure}`;
+}
+
+export function authHeaders(token: string): Headers {
+  const headers = new Headers();
+  headers.append("Set-Cookie", sessionCookie(token));
+  headers.append("Set-Cookie", authFlagCookie(true));
+  return headers;
+}
+
+export function clearAuthHeaders(): Headers {
+  const headers = new Headers();
+  headers.append("Set-Cookie", clearSessionCookie());
+  headers.append("Set-Cookie", authFlagCookie(false));
+  headers.append("Set-Cookie", connectCookie(false));
+  return headers;
+}
+
 export function readSessionToken(req: Request): string | null {
   const raw = req.headers.get("cookie");
   if (!raw) return null;
@@ -114,7 +142,7 @@ function writeOutbox(
 async function maybeResend(to: string, subject: string, body: string) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return;
-  const from = process.env.EMAIL_FROM || "Narrator <noreply@example.com>";
+  const from = process.env.EMAIL_FROM || "NR8R <noreply@example.com>";
   try {
     await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -140,7 +168,7 @@ export async function signup(
   const userId = newId();
   const token = randomToken();
   const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/auth/verify?token=${token}`;
-  const subject = "Verify your Narrator email";
+  const subject = "Verify your NR8R email";
   const body = `Open this link to verify your email and receive 15 credits:\n\n${verifyUrl}\n\nThe link expires in 24 hours.`;
   withTx(db, () => {
     db.prepare(
@@ -191,7 +219,7 @@ export async function resendVerification(db: Database, user: UserRow, now = Date
   hitRateLimit(db, rateIdentity("verify", user.email), 3, 60 * 60 * 1000, now);
   const token = randomToken();
   const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/auth/verify?token=${token}`;
-  const subject = "Verify your Narrator email";
+  const subject = "Verify your NR8R email";
   const body = `Open this link to verify your email and receive 15 credits:\n\n${verifyUrl}\n\nThe link expires in 24 hours.`;
   withTx(db, () => {
     db.prepare(`DELETE FROM email_tokens WHERE user_id = ? AND purpose = 'verify'`).run(user.id);
@@ -219,6 +247,65 @@ export function login(
   if (!user || !ok) throw new ApiError(401, "invalid_login");
   const token = createSession(db, user.id, now);
   return { token, user };
+}
+
+export function loginWithGoogle(
+  db: Database,
+  profile: { sub: string; email: string; emailVerified: boolean },
+  now = Date.now(),
+): { token: string; created: boolean } {
+  const email = normalizeEmail(profile.email);
+  const sub = profile.sub.trim();
+  if (!sub || sub.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new ApiError(400, "invalid_login");
+  hitRateLimit(db, rateIdentity("google", email), 8, 15 * 60 * 1000, now);
+  let user = (db.prepare(`SELECT * FROM users WHERE google_sub = ?`).get(sub) as UserRow | undefined) ?? null;
+  let created = false;
+  if (!user) {
+    const existing = getUserByEmail(db, email);
+    if (existing) {
+      db.prepare(`UPDATE users SET google_sub = COALESCE(google_sub, ?) WHERE id = ?`).run(sub, existing.id);
+      user = getUserById(db, existing.id);
+    }
+  }
+  if (!user) {
+    created = true;
+    const userId = newId();
+    const verifiedAt = profile.emailVerified ? now : null;
+    withTx(db, () => {
+      db.prepare(
+        `INSERT INTO users (id, email, password_hash, email_verified_at, created_at, plan, plan_status, auto_spend, chargeback_frozen, free_grant_issued, google_sub)
+         VALUES (?, ?, ?, ?, ?, 'free', 'none', 0, 0, ?, ?)`,
+      ).run(userId, email, hashPassword(randomToken()), verifiedAt, now, profile.emailVerified ? 1 : 0, sub);
+      if (profile.emailVerified) {
+        grantCredits(db, {
+          userId,
+          kind: "promo",
+          millicredits: creditsToMilli(PLANS.free.credits),
+          expiresAt: null,
+          sourceId: `free:${userId}`,
+          now,
+        });
+      }
+    });
+    user = getUserById(db, userId);
+  } else if (profile.emailVerified && !user.email_verified_at) {
+    withTx(db, () => {
+      db.prepare(`UPDATE users SET email_verified_at = ? WHERE id = ?`).run(now, user?.id);
+      if (user && user.free_grant_issued === 0) {
+        grantCredits(db, {
+          userId: user.id,
+          kind: "promo",
+          millicredits: creditsToMilli(PLANS.free.credits),
+          expiresAt: null,
+          sourceId: `free:${user.id}`,
+          now,
+        });
+        db.prepare(`UPDATE users SET free_grant_issued = 1 WHERE id = ?`).run(user.id);
+      }
+    });
+  }
+  if (!user) throw new ApiError(401, "invalid_login");
+  return { token: createSession(db, user.id, now), created };
 }
 
 export function requireUser(db: Database, req: Request): UserRow {

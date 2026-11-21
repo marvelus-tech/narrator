@@ -349,11 +349,13 @@ export function ProjectWorkspace({ initial }: { initial: WorkspaceData }) {
                   <span className="chip">{job.status}</span> {job.kind} {job.resolution}{" "}
                   {job.output_asset_id ? <a href={`/api/assets/${job.output_asset_id}?download=1`}>Download</a> : null}
                   {job.error ? <span className="warn"> {job.error}</span> : null}
-                  {data.integrations.canPublish && job.output_asset_id ? (
+                  {job.output_asset_id ? (
                     <span className="row">
                       <button type="button" className="btn-ghost small" onClick={() => void publish(job.output_asset_id as string, "drive")}>Drive</button>
                       <button type="button" className="btn-ghost small" onClick={() => void publish(job.output_asset_id as string, "dropbox")}>Dropbox</button>
-                      <button type="button" className="btn-ghost small" onClick={() => void publish(job.output_asset_id as string, "social")}>Social</button>
+                      {data.integrations.canPublish ? (
+                        <button type="button" className="btn-ghost small" onClick={() => void publish(job.output_asset_id as string, "social")}>Social</button>
+                      ) : null}
                     </span>
                   ) : null}
                 </li>
@@ -362,7 +364,7 @@ export function ProjectWorkspace({ initial }: { initial: WorkspaceData }) {
             {data.integrations.canPublish ? (
               <p className="muted">{data.integrations.configured ? "Publishing uses your Composio tools and does not spend generation credits." : "Publishing tools are not configured on this server. Download still works."}</p>
             ) : (
-              <p className="muted">Drive, Dropbox, and social publishing are on Maker and Studio. Download is included on every plan.</p>
+              <p className="muted">Drive and Dropbox are on every plan. YouTube, X, and TikTok publish on Maker and Studio. Download is included on every plan.</p>
             )}
           </div>
         </aside>

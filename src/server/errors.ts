@@ -10,8 +10,8 @@ export class ApiError extends Error {
 }
 
 const messages: Record<string, string> = {
-  origin_required: "This action has to come from the Narrator site.",
-  origin_mismatch: "This action has to come from the Narrator site.",
+  origin_required: "This action has to come from the NR8R site.",
+  origin_mismatch: "This action has to come from the NR8R site.",
   invalid_body: "That form could not be read.",
   invalid_email: "Enter a valid email address.",
   weak_password: "Use a password of at least 10 characters.",
@@ -39,7 +39,7 @@ const messages: Record<string, string> = {
   demo_billing_disabled: "Demo checkout is disabled.",
   no_customer: "Open a checkout once before the customer portal.",
   integration_unavailable: "Publishing is not configured on this server.",
-  integration_plan: "Drive, Dropbox, and social publishing are on Maker and Studio.",
+  integration_plan: "YouTube, X, and TikTok publish on Maker and Studio.",
   render_unavailable: "ffmpeg is not installed, so the silent cut cannot be built. Download the clips instead.",
   planner_unavailable: "The model planner is not configured. The scripted shot plan is unchanged.",
   confirm_required: "Generation needs an explicit confirmation.",
