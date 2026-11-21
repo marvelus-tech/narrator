@@ -23,12 +23,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - uses: actions/configure-pages@v5
       - run: npm ci
-      - run: node scripts/export-github-pages.mjs
+      - run: npm run build:pages
         env:
-          NARRATOR_PAGES: "1"
+          GITHUB_PAGES: "1"
           NEXT_PUBLIC_BASE_PATH: /narrator
           NEXT_PUBLIC_SITE_URL: https://marvelus-tech.github.io/narrator
+          NEXT_PUBLIC_GITHUB_PAGES: "1"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

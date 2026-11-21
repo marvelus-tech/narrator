@@ -1,14 +1,16 @@
 import type { NextConfig } from "next";
 
-// GitHub Pages is a static host at /narrator. The server build stays standalone.
-const pagesExport = process.env.NARRATOR_PAGES === "1";
+// GitHub Pages is static. GITHUB_PAGES=1 exports the site. A normal build stays standalone.
+const pagesExport = process.env.GITHUB_PAGES === "1";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const nextConfig: NextConfig = {
   output: pagesExport ? "export" : "standalone",
   poweredByHeader: false,
   ...(pagesExport
     ? {
-        basePath: "/narrator",
+        basePath,
+        assetPrefix: basePath,
         trailingSlash: true,
         images: { unoptimized: true },
       }
