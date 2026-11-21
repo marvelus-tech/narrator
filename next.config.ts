@@ -13,11 +13,11 @@ const nextConfig: NextConfig = {
         images: { unoptimized: true },
       }
     : {
-        serverExternalPackages: ["better-sqlite3"],
-        // Schema SQL is read from disk at runtime. Trace it into the standalone bundle.
+        serverExternalPackages: ["better-sqlite3", "pg"],
+        // Schema SQL, the Postgres worker, and the bundled font are read from disk at runtime.
         outputFileTracingIncludes: {
-          "/*": ["./src/server/schema/**/*"],
-          "/api/*": ["./src/server/schema/**/*"],
+          "/*": ["./src/server/schema/**/*", "./src/server/pg-worker.cjs", "./src/fonts/**/*", "./migrations/**/*"],
+          "/api/*": ["./src/server/schema/**/*", "./src/server/pg-worker.cjs", "./src/fonts/**/*", "./migrations/**/*"],
         },
         images: {
           formats: ["image/avif", "image/webp"],

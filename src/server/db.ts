@@ -1,12 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import Database from "better-sqlite3";
+import { openPg } from "./pg-sync";
 import { writableDataFile } from "./paths";
 
 const globalForDb = globalThis as unknown as { narratorDb?: Database.Database | null };
 
-// SQLite file, not DATABASE_URL. A top-level migrations/*.sql folder would make
-// Cursor hosting provision Postgres and try to run this dialect there.
+// DATABASE_URL selects Postgres (Cursor hosting). Otherwise SQLite.
+// Postgres schema lives in migrations/. SQLite schema lives in src/server/schema/.
 const schemaDir = path.join(process.cwd(), "src", "server", "schema");
 
 export function databasePath(): string {
@@ -47,9 +48,14 @@ export function migrate(db: Database.Database, dir = schemaDir): void {
 
 export function getDb(): Database.Database {
   if (!globalForDb.narratorDb) {
-    const db = openDatabase(databasePath());
-    migrate(db);
-    globalForDb.narratorDb = db;
+    const url = process.env.DATABASE_URL?.trim();
+    if (url) {
+      globalForDb.narratorDb = openPg(url);
+    } else {
+      const db = openDatabase(databasePath());
+      migrate(db);
+      globalForDb.narratorDb = db;
+    }
   }
   return globalForDb.narratorDb;
 }

@@ -1,6 +1,7 @@
 import type { Database } from "better-sqlite3";
 import Stripe from "stripe";
 import { creditsToMilli, isPackId, isPlanId, PACKS, PLANS, type PackId, type PlanId } from "@/shared/economy";
+import { checkoutMetadata, inlinePriceData, purchaseFromMetadata } from "./stripe";
 import type { UserRow } from "./auth";
 import { getUserByCustomer, getUserById } from "./auth";
 import { clawbackUnspent, grantCredits } from "./credits";
@@ -89,6 +90,21 @@ function periodEndMs(value: unknown): number | null {
   return value < 10_000_000_000 ? value * 1000 : value;
 }
 
+function invoiceMeta(object: Record<string, unknown>, line: Record<string, unknown> | undefined): Record<string, unknown> {
+  const parent = asRecord(object.parent);
+  const bags = [
+    asRecord(asRecord(parent?.subscription_details)?.metadata),
+    asRecord(asRecord(object.subscription_details)?.metadata),
+    asRecord(line?.metadata),
+    asRecord(object.metadata),
+  ];
+  const merged: Record<string, unknown> = {};
+  for (const bag of bags) {
+    if (bag) Object.assign(merged, bag);
+  }
+  return merged;
+}
+
 function userForObject(db: Database, object: Record<string, unknown>): UserRow | null {
   const userId = metaUserId(object);
   if (userId) {
@@ -138,8 +154,10 @@ export function applyStripeEvent(db: Database, event: BillingEvent, now = Date.n
       const mode = object.mode;
       const customer = typeof object.customer === "string" ? object.customer : null;
       if (user && mode === "payment") {
-        const pack = asRecord(object.metadata)?.pack;
-        if (typeof pack === "string" && isPackId(pack)) grantPack(db, user, pack, String(object.id), customer, now);
+        const meta = asRecord(object.metadata);
+        const parsed = purchaseFromMetadata(meta);
+        const pack = typeof meta?.pack === "string" && isPackId(meta.pack) ? meta.pack : parsed?.kind === "pack" ? parsed.pack : null;
+        if (pack) grantPack(db, user, pack, String(object.id), customer, now);
       } else if (user && customer) {
         db.prepare(`UPDATE users SET stripe_customer_id = COALESCE(stripe_customer_id, ?) WHERE id = ?`).run(customer, user.id);
       }
@@ -151,15 +169,15 @@ export function applyStripeEvent(db: Database, event: BillingEvent, now = Date.n
         const line = data[0];
         const priceId = line ? priceFromLine(line) : null;
         const period = line ? asRecord(line.period) : null;
-        const periodEnd = periodEndMs(period?.end) ?? now + 30 * 24 * 60 * 60 * 1000;
+        const periodEnd = periodEndMs(period?.end) ?? periodEndMs(object.current_period_end) ?? now + 30 * 24 * 60 * 60 * 1000;
         const catalog = priceId ? catalogId(priceId) : null;
+        const metaPlan = purchaseFromMetadata(invoiceMeta(object, line));
+        const plan = catalog && isPlanId(catalog) && catalog !== "free" ? catalog : metaPlan?.kind === "plan" ? metaPlan.plan : null;
         const user = userForObject(db, object);
-        if (catalog && isPlanId(catalog) && catalog !== "free" && !user) {
-          throw new ApiError(409, "not_found");
-        }
-        if (user && catalog && isPlanId(catalog) && catalog !== "free") {
+        if (plan && !user) throw new ApiError(409, "not_found");
+        if (user && plan) {
           const customer = typeof object.customer === "string" ? object.customer : null;
-          grantPlan(db, user, catalog, periodEnd, String(object.id), customer, now);
+          grantPlan(db, user, plan, periodEnd, String(object.id), customer, now);
         }
       }
     } else if (event.type === "customer.subscription.updated" || event.type === "customer.subscription.deleted") {
@@ -212,8 +230,9 @@ export async function startCheckout(
     if (!demoBillingAllowed()) throw new ApiError(503, "billing_unconfigured");
     return { url: demoApply(db, user, body), demo: true };
   }
-  const price = body.kind === "plan" ? priceIdForPlan(body.plan) : priceIdForPack(body.pack);
-  if (!price) throw new ApiError(503, "billing_unconfigured");
+  const explicit = body.kind === "plan" ? priceIdForPlan(body.plan) : priceIdForPack(body.pack);
+  const lineItem = explicit ? { price: explicit, quantity: 1 } : { price_data: inlinePriceData(body), quantity: 1 };
+  const metadata = checkoutMetadata(user.id, body);
   let customer = user.stripe_customer_id;
   if (!customer) {
     const created = await stripe.customers.create({ email: user.email, metadata: { userId: user.id } });
@@ -227,11 +246,11 @@ export async function startCheckout(
       mode: "subscription",
       customer,
       client_reference_id: user.id,
-      line_items: [{ price, quantity: 1 }],
+      line_items: [lineItem],
       success_url: success,
       cancel_url: cancel,
-      metadata: { userId: user.id, plan: body.plan },
-      subscription_data: { metadata: { userId: user.id, plan: body.plan } },
+      metadata,
+      subscription_data: { metadata },
     });
     if (!session.url) throw new ApiError(502, "billing_unconfigured");
     return { url: session.url, demo: false };
@@ -240,10 +259,10 @@ export async function startCheckout(
     mode: "payment",
     customer,
     client_reference_id: user.id,
-    line_items: [{ price, quantity: 1 }],
+    line_items: [lineItem],
     success_url: success,
     cancel_url: cancel,
-    metadata: { userId: user.id, pack: body.pack },
+    metadata,
   });
   if (!session.url) throw new ApiError(502, "billing_unconfigured");
   return { url: session.url, demo: false };

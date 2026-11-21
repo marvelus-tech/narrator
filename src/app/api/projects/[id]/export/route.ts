@@ -14,7 +14,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
     return new Response(new Uint8Array(zip), {
       headers: {
         "Content-Type": "application/zip",
-        "Content-Disposition": `attachment; filename="narrator-${id.slice(0, 8)}.zip"`,
+        "Content-Disposition": `attachment; filename="nr8r-${id.slice(0, 8)}.zip"`,
         "Cache-Control": "private, no-store",
       },
     });

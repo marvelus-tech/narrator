@@ -23,9 +23,10 @@ export default async function SettingsPage() {
       {user.email_verified_at ? null : <ResendButton />}
       <p>Every still and clip asks you to confirm the price. This version has no auto-spend switch.</p>
       <p>
-        Publishing: {composioConfigured() ? "Composio key is set." : "Composio is not configured, so Drive, Dropbox, and social buttons stay unavailable."}{" "}
-        Those calls are separate from quotes, credits, and Stripe. They are offered on Maker and Studio.
+        Publishing: {composioConfigured() ? "Composio key is set." : "Composio is not configured, so the connect buttons explain how to add a key."}{" "}
+        Drive and Dropbox are on every plan. YouTube, X, and TikTok publish on Maker and Studio. Those calls stay off the credit price.
       </p>
+      <p><Link href={routes.onboarding}>Connect your creative stack</Link></p>
       <p><Link href={routes.billing}>Open billing</Link></p>
     </div>
   );

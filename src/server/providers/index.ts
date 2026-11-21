@@ -1,23 +1,25 @@
+import { falProvider, keyedMediaProvider } from "./cloud-media";
 import { httpProvider } from "./http";
+import { localFilmProvider } from "./local-film";
 import { mockProvider } from "./mock";
 import { tregProvider } from "./treg";
 import type { MediaProvider } from "./types";
 
-export function providerMode(): "mock" | "treg" | "http" {
-  const forced = process.env.NARRATOR_PROVIDER;
-  if (forced === "mock" || forced === "treg" || forced === "http") return forced;
-  if (process.env.MEDIA_HTTP_URL && process.env.MEDIA_HTTP_TOKEN) return "http";
-  if (process.env.TREG_TOKEN) return "treg";
-  return "mock";
-}
-
 export function selectProvider(): MediaProvider {
-  const mode = providerMode();
-  if (mode === "http") return httpProvider;
-  if (mode === "treg" && process.env.TREG_TOKEN) return tregProvider;
-  return mockProvider;
+  const forced = process.env.NARRATOR_PROVIDER;
+  if (forced === "mock") return mockProvider;
+  if (forced === "local") return localFilmProvider;
+  if (forced === "http") return httpProvider;
+  if (forced === "treg" || (!forced && process.env.TREG_TOKEN)) return tregProvider;
+  if (forced === "fal" || (!forced && process.env.FAL_KEY)) return falProvider;
+  if (process.env.XAI_API_KEY || process.env.OPENAI_API_KEY) return keyedMediaProvider;
+  return localFilmProvider;
 }
 
 export function providerLabel(): string {
   return selectProvider().name;
+}
+
+export function providerMode(): string {
+  return providerLabel();
 }

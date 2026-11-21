@@ -19,7 +19,7 @@ export function pageMeta(key: PageKey): Metadata {
       title: page.title,
       description: page.description,
       url,
-      siteName: "Narrator",
+      siteName: "NR8R",
       type: "website",
     },
   };
