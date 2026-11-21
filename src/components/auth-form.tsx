@@ -1,26 +1,40 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { apiUrl, followUrl } from "@/shared/api-base";
 import { routes } from "@/shared/routes";
 
-export function AuthForm({ mode, next }: { mode: "login" | "signup"; next?: string }) {
+export function AuthForm({ mode, next, connectDefault = true }: { mode: "login" | "signup"; next?: string; connectDefault?: boolean }) {
   const [error, setError] = useState<string | null>(null);
   const [verifyUrl, setVerifyUrl] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const [connect, setConnect] = useState(connectDefault);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      const google = new URLSearchParams(window.location.search).get("google");
+      if (google === "setup") setError("Google sign-in needs GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET on the server.");
+      if (google === "denied") setError("Google sign-in was not completed.");
+      if (google === "rate") setError("Too many Google sign-in attempts. Wait and try again.");
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
     setPending(true);
     const form = new FormData(event.currentTarget);
-    const res = await fetch(mode === "login" ? "/api/auth/login" : "/api/auth/signup", {
+    const res = await fetch(apiUrl(mode === "login" ? "/api/auth/login" : "/api/auth/signup"), {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: form.get("email"),
         password: form.get("password"),
         next,
+        connect,
       }),
     });
     const data = (await res.json()) as { message?: string; next?: string; devVerifyUrl?: string };
@@ -33,11 +47,18 @@ export function AuthForm({ mode, next }: { mode: "login" | "signup"; next?: stri
       setVerifyUrl(data.devVerifyUrl);
       return;
     }
-    window.location.href = data.next || routes.app;
+    followUrl(data.next || routes.app);
   }
+
+  const googleHref = `${apiUrl("/api/auth/google")}?connect=${connect ? "1" : "0"}`;
 
   return (
     <form className="form" onSubmit={onSubmit}>
+      <a className="btn" href={googleHref}>Continue with Google</a>
+      <label className="check">
+        <input type="checkbox" checked={connect} onChange={(event) => setConnect(event.target.checked)} />
+        Connect Google Drive, Dropbox & YouTube right after sign-in
+      </label>
       <label>
         Email
         <input name="email" type="email" autoComplete="email" required />
@@ -50,7 +71,7 @@ export function AuthForm({ mode, next }: { mode: "login" | "signup"; next?: stri
       {error ? <p className="error" role="alert">{error}</p> : null}
       {verifyUrl ? (
         <p className="panel">
-          Mail is not configured, so the verification link is shown here. Open it, then go to your projects.
+          Mail is not configured, so the verification link is shown here. Open it, then connect your stack.
           <br />
           <a href={verifyUrl}>Verify email</a>
         </p>
@@ -59,11 +80,7 @@ export function AuthForm({ mode, next }: { mode: "login" | "signup"; next?: stri
         {mode === "login" ? "Log in" : "Create account"}
       </button>
       <p className="muted">
-        {mode === "login" ? (
-          <Link href={routes.signup}>Need an account?</Link>
-        ) : (
-          <Link href={routes.login}>Already have an account?</Link>
-        )}
+        {mode === "login" ? <Link href={routes.signup}>Need an account?</Link> : <Link href={routes.login}>Already have an account?</Link>}
       </p>
     </form>
   );

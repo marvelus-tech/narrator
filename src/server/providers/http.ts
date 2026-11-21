@@ -1,3 +1,4 @@
+import { assertApiUrl } from "../hosts";
 import type { GenerateInput, GenerateOutput, MediaProvider } from "./types";
 
 // A bring-your-own endpoint. POST JSON, receive { mime, base64, costMicro }.
@@ -7,6 +8,7 @@ export const httpProvider: MediaProvider = {
     const url = process.env.MEDIA_HTTP_URL;
     const token = process.env.MEDIA_HTTP_TOKEN;
     if (!url || !token) throw new Error("provider_unconfigured");
+    assertApiUrl(url);
     const res = await fetch(url, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },

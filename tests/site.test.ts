@@ -52,10 +52,15 @@ describe("routes and metadata", () => {
 });
 
 describe("hosted database", () => {
-  it("keeps sqlite schema off the Postgres migrations trigger", () => {
-    expect(fs.existsSync("migrations")).toBe(false);
-    expect(fs.existsSync("cursor-app.json")).toBe(false);
+  it("ships Postgres migrations and the Cursor database manifest", () => {
+    const postgres = fs.readFileSync("migrations/001_init.sql", "utf8");
+    const extra = fs.readFileSync("migrations/001_init_postgres.sql", "utf8");
+    const app = fs.readFileSync("cursor-app.json", "utf8");
+    expect(postgres).toContain("user_integrations");
+    expect(extra).toContain("user_integrations");
+    expect(app).toContain("postgres");
     expect(fs.existsSync("src/server/schema/001_init.sql")).toBe(true);
+    expect(fs.readFileSync("src/server/schema/002_integrations.sql", "utf8")).toContain("user_integrations");
   });
 });
 

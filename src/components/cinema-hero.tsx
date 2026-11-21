@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { HeroPromptComposer } from "@/components/hero-prompt-composer";
 import { creditExamples, landing } from "@/shared/content";
 import { routes } from "@/shared/routes";
 
@@ -57,26 +58,9 @@ export function CinemaHero() {
         <p className="kicker">{landing.kicker}</p>
         <h1 id="cinema-title">{landing.title}</h1>
         <p className="lede">{landing.lede}</p>
-        <div className="actions">
-          <Link className="btn" href={routes.signup}>
-            Start a brief
-          </Link>
-          <Link className="btn-ghost" href={routes.pricing}>
-            See pricing
-          </Link>
-        </div>
       </div>
+      <HeroPromptComposer />
       <div className="cinema-stage">
-        <div className="cinema-pins">
-          <figure>
-            <Image src="/showcase/cast-01.webp" alt="Courier reference portrait" width={480} height={640} />
-            <figcaption>CAST 01</figcaption>
-          </figure>
-          <figure>
-            <Image src="/showcase/loc-01.webp" alt="Flooded street location reference" width={1200} height={502} />
-            <figcaption>CAST 02</figcaption>
-          </figure>
-        </div>
         <div className="cinema-monitor" role="region" aria-label="Direction monitor">
           <div className="cinema-readout">
             <span className="cinema-rec">REC 00:00:05:00 · 24 FPS</span>
@@ -143,6 +127,9 @@ export function CinemaHero() {
             ))}
           </div>
         </div>
+      </div>
+      <div className="actions cinema-try">
+        <Link className="btn" href={routes.app}>Try it now</Link>
       </div>
     </section>
   );

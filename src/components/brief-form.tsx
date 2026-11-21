@@ -48,7 +48,8 @@ export function BriefForm() {
       </label>
       <label>
         Aspect
-        <select name="aspect" defaultValue="16:9">
+        <select name="aspect" defaultValue="2.39:1">
+          <option>2.39:1</option>
           <option>16:9</option>
           <option>9:16</option>
           <option>1:1</option>

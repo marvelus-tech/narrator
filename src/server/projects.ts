@@ -17,9 +17,10 @@ const lookSchema = z.object({
 
 export const briefSchema = z.object({
   brief: z.string().trim().min(12).max(2000),
-  aspect: z.enum(["16:9", "9:16", "1:1"]),
+  aspect: z.enum(["2.39:1", "16:9", "9:16", "1:1"]),
   look: lookSchema,
   useModel: z.boolean().optional(),
+  shotCount: z.number().int().min(4).max(6).optional(),
 });
 
 export const shotPatchSchema = z.object({
@@ -40,15 +41,18 @@ const PROJECT_LIMIT = 30;
 export async function createProject(db: Database, user: UserRow, input: z.infer<typeof briefSchema>) {
   const count = (db.prepare(`SELECT COUNT(*) AS n FROM projects WHERE user_id = ?`).get(user.id) as { n: number }).n;
   if (count >= PROJECT_LIMIT) throw new ApiError(429, "project_limit");
-  const planned = input.useModel
-    ? await planWithModel(db, {
-        userId: user.id,
-        plan: user.plan === "starter" || user.plan === "maker" || user.plan === "studio" ? user.plan : "free",
-        periodEnd: user.plan_period_end,
-        brief: input.brief,
-        look: input.look,
-      })
-    : { ...planBrief(input.brief, input.look), charged: false };
+  const planId = user.plan === "starter" || user.plan === "maker" || user.plan === "studio" ? user.plan : "free";
+  const planned =
+    input.useModel === false
+      ? { ...planBrief(input.brief, input.look, input.shotCount ?? 5), charged: false }
+      : await planWithModel(db, {
+          userId: user.id,
+          plan: planId,
+          periodEnd: user.plan_period_end,
+          brief: input.brief,
+          look: input.look,
+          shotCount: input.shotCount,
+        });
   const now = Date.now();
   const projectId = newId();
   withTx(db, () => {
@@ -89,6 +93,24 @@ export async function createProject(db: Database, user: UserRow, input: z.infer<
         );
       });
     });
+    for (const person of planned.cast) {
+      db.prepare(`INSERT INTO elements (id, project_id, kind, name, notes, created_at) VALUES (?, ?, 'character', ?, ?, ?)`).run(
+        newId(),
+        projectId,
+        person.name.slice(0, 80),
+        person.notes.slice(0, 400),
+        now,
+      );
+    }
+    for (const place of planned.locations) {
+      db.prepare(`INSERT INTO elements (id, project_id, kind, name, notes, created_at) VALUES (?, ?, 'location', ?, ?, ?)`).run(
+        newId(),
+        projectId,
+        place.name.slice(0, 80),
+        place.notes.slice(0, 400),
+        now,
+      );
+    }
   });
   return projectId;
 }
@@ -132,7 +154,7 @@ export function linkElement(db: Database, userId: string, shotId: string, elemen
   const project = db.prepare(`SELECT user_id FROM projects WHERE id = ?`).get(shot.project_id) as { user_id: string };
   if (project.user_id !== userId) throw new ApiError(404, "not_found");
   if (linked) {
-    db.prepare(`INSERT OR IGNORE INTO shot_elements (shot_id, element_id) VALUES (?, ?)`).run(shotId, elementId);
+    db.prepare(`INSERT INTO shot_elements (shot_id, element_id) VALUES (?, ?) ON CONFLICT DO NOTHING`).run(shotId, elementId);
   } else {
     db.prepare(`DELETE FROM shot_elements WHERE shot_id = ? AND element_id = ?`).run(shotId, elementId);
   }
@@ -150,7 +172,7 @@ export function attachAsset(db: Database, userId: string, elementId: string, ass
     db.prepare(`SELECT COUNT(*) AS n FROM element_assets WHERE element_id = ?`).get(elementId) as { n: number }
   ).n;
   if (count >= 8) throw new ApiError(400, "too_many_refs");
-  db.prepare(`INSERT OR IGNORE INTO element_assets (element_id, asset_id) VALUES (?, ?)`).run(elementId, assetId);
+  db.prepare(`INSERT INTO element_assets (element_id, asset_id) VALUES (?, ?) ON CONFLICT DO NOTHING`).run(elementId, assetId);
 }
 
 export function projectPayload(db: Database, user: UserRow, projectId: string) {

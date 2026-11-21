@@ -1,5 +1,7 @@
-Narrator was written for this repository.
+NR8R was written for this repository.
 
-The shot plan, credit hold, and provider adapter ideas are informed by the MIT-licensed Parallax project (copyright 2026 Nick Vasilescu). Narrator does not copy that project's source, interface, or branding.
+The headline face is Barlow Condensed, licensed under the SIL Open Font License 1.1. The files are `src/fonts/barlow-condensed-600.woff2` and `src/fonts/barlow-condensed-600.ttf`.
 
-Model output rights follow the provider that renders the file. Narrator does not grant a separate commercial license.
+The shot plan, credit hold, and provider adapter ideas are informed by the MIT-licensed Parallax project (copyright 2026 Nick Vasilescu). NR8R does not copy that project's source, interface, or branding.
+
+Model output rights follow the provider that renders the file. NR8R does not grant a separate commercial license.
