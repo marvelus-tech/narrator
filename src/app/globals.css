@@ -133,6 +133,155 @@ textarea { min-height: 140px; resize: vertical; }
 
 @media (max-width: 860px) {
   .hero, .steps, .cards, .shot-grid, .examples { grid-template-columns: 1fr; }
-  .bar, .footer-grid, .app-nav { flex-wrap: wrap; height: auto; padding: 12px 0; }
+  .bar, .footer-grid, .app-nav { flex-wrap: wrap; height: auto; padding: 12px 0; align-items: flex-start; }
+  .nav { flex: 1 1 100%; flex-wrap: wrap; justify-content: flex-start; min-width: 0; max-width: 100%; row-gap: 8px; }
   h1 { font-size: 40px; }
+}
+
+/* Home stage only. App, auth, and legal pages keep the paper tokens above. */
+.cinema {
+  background: #09090b;
+  color: #f5f3ee;
+  padding: 36px 0 72px;
+}
+.cinema h1, .cinema h2, .cinema h3 { color: #f5f3ee; }
+.cinema .lede { color: #d9d4cb; max-width: 38rem; }
+.cinema .kicker { color: #f5a524; }
+.cinema .btn { background: #f5a524; color: #09090b; }
+.cinema .btn-ghost { border-color: #f5f3ee; color: #f5f3ee; }
+.cinema-hero { display: grid; gap: 28px; padding-top: 12px; }
+.cinema-stage { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 14px; align-items: start; }
+.cinema-monitor, .cinema-strip { min-width: 0; }
+.cinema-pins { display: grid; gap: 10px; }
+.cinema-pins figure { margin: 0; }
+.cinema-pins img { width: 100%; height: 132px; object-fit: cover; border-radius: 8px; display: block; }
+.cinema-pins figcaption {
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #f5a524;
+}
+.cinema-monitor {
+  background: #121317;
+  border-radius: 18px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+.cinema-readout, .cinema-chips, .cinema-strip { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.cinema-readout { justify-content: space-between; font-variant-numeric: tabular-nums; font-size: 13px; letter-spacing: 0.06em; }
+.cinema-rec { color: #f5a524; }
+.cinema-quote { background: #34d399; color: #09090b; border-radius: 999px; padding: 4px 10px; font-weight: 700; }
+.cinema-screen { position: relative; aspect-ratio: 2.39 / 1; background: #09090b; overflow: hidden; border-radius: 8px; }
+.cinema-screen img, .cinema-video { width: 100%; height: 100%; object-fit: cover; }
+.cinema-video { position: absolute; inset: 0; }
+.cinema-bracket { position: absolute; width: 28px; height: 28px; border: 0 solid #f5a524; pointer-events: none; }
+.cinema-bracket.tl { top: 8%; left: 6%; border-top-width: 2px; border-left-width: 2px; }
+.cinema-bracket.tr { top: 8%; right: 6%; border-top-width: 2px; border-left-width: 0; border-right-width: 2px; }
+.cinema-bracket.bl { bottom: 8%; left: 6%; border-bottom-width: 2px; border-left-width: 2px; }
+.cinema-bracket.br { bottom: 8%; right: 6%; border-bottom-width: 2px; border-right-width: 2px; }
+.cinema-cross {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.7;
+}
+.cinema-cross::before, .cinema-cross::after {
+  content: "";
+  position: absolute;
+  background: #f5f3ee;
+}
+.cinema-cross::before { left: 50%; top: 0; width: 1px; height: 100%; }
+.cinema-cross::after { top: 50%; left: 0; height: 1px; width: 100%; }
+.cinema-chip {
+  border: 1px solid #3a3d46;
+  background: transparent;
+  color: #f5f3ee;
+  border-radius: 999px;
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.cinema-chip[aria-pressed="true"] { border-color: #f5a524; color: #f5a524; }
+.cinema-chip-lens { color: #f5a524; border-color: #f5a524; }
+.cinema-strip { overflow-x: auto; }
+.cinema-sprocket {
+  display: grid;
+  grid-template-columns: 12px 1fr 12px;
+  gap: 4px;
+  background: #09090b;
+  border: 1px solid transparent;
+  padding: 4px;
+  border-radius: 6px;
+  min-width: 132px;
+}
+.cinema-sprocket[aria-selected="true"] { border-color: #f5a524; }
+.cinema-sprocket-static { width: 100%; }
+.cinema-holes {
+  background-image: radial-gradient(circle, #f5f3ee 2px, transparent 2.5px);
+  background-size: 12px 14px;
+  background-repeat: repeat-y;
+  opacity: 0.45;
+}
+.cinema-cell { position: relative; display: block; aspect-ratio: 2.39 / 1; overflow: hidden; }
+.cinema-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cinema-cell > span:last-child {
+  position: absolute;
+  left: 6px;
+  bottom: 4px;
+  color: #f5f3ee;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 2px #09090b;
+}
+.cinema-reticle {
+  position: absolute;
+  inset: 18%;
+  border: 1px solid rgba(245, 243, 238, 0.7);
+  pointer-events: none;
+}
+.cinema-block { padding: 36px 0 8px; }
+.cinema-block h2 { margin-bottom: 16px; }
+.cinema-pipeline, .cinema-grammar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.cinema-grammar { grid-template-columns: repeat(3, 1fr); }
+.cinema-card {
+  background: #121317;
+  border-radius: 16px;
+  padding: 14px;
+}
+.cinema-card h3 { font-size: 20px; }
+.cinema-card p { margin: 8px 0 0; color: #d9d4cb; }
+.cinema-slate { margin: 0; color: #f5a524; letter-spacing: 0.14em; font-size: 13px; }
+.cinema-mini { margin: 10px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 2.39 / 1; }
+.cinema-mini img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cinema-note, .cinema-limit { color: #d9d4cb; max-width: 46rem; }
+.cinema-spec { letter-spacing: 0.04em; font-size: 14px; }
+.cinema-price { color: #34d399; font-variant-numeric: tabular-nums; font-weight: 700; }
+.cinema-ledger { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
+.cinema-ledger li {
+  display: grid;
+  grid-template-columns: 160px 140px 1fr;
+  gap: 12px;
+  border-top: 1px solid #3a3d46;
+  padding: 12px 0;
+  align-items: baseline;
+}
+.cinema-ledger span { color: #34d399; font-variant-numeric: tabular-nums; }
+.cinema-ledger em { color: #d9d4cb; font-style: normal; }
+.cinema-limit a { color: #f5a524; }
+
+@media (max-width: 860px) {
+  .cinema-stage, .cinema-pipeline, .cinema-grammar, .cinema-ledger li { grid-template-columns: 1fr; }
+  .cinema-pins { grid-template-columns: 1fr 1fr; }
+  .cinema-pins img { height: 120px; }
+  .cinema h1 { font-size: 36px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinema-video { display: none; }
 }

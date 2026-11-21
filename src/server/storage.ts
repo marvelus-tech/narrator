@@ -3,13 +3,12 @@ import path from "node:path";
 import type { Database } from "better-sqlite3";
 import { ApiError } from "./errors";
 import { newId } from "./ids";
+import { writableDataFile } from "./paths";
 
 export function assetRoot(): string {
   // Assigning process.env.X = undefined stores the string "undefined".
   // Treat that as unset so files never land in a folder named undefined.
-  const configured = process.env.ASSET_DIR;
-  if (!configured || configured === "undefined") return path.resolve(process.cwd(), "data", "assets");
-  return path.resolve(configured);
+  return writableDataFile("assets", process.env.ASSET_DIR);
 }
 
 export function safeAssetPath(storageName: string): string {

@@ -74,9 +74,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.home,
     file: "src/app/page.tsx",
     index: true,
-    title: "Narrator | Brief to shot plan",
+    title: "Narrator | Price the shot first",
     description:
-      "Turn one film brief into an editable shot list, then see the credit price before any still or clip is made. Monthly plan credits expire at period end.",
+      "Turn one film brief into scenes, shots, a lens, and a camera move. See the credit price, approve it, then make the still or the five second clip.",
   },
   pricing: {
     key: "pricing",

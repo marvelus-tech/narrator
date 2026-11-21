@@ -1,11 +1,16 @@
 import fs from "node:fs";
 import path from "node:path";
 import Database from "better-sqlite3";
+import { writableDataFile } from "./paths";
 
 const globalForDb = globalThis as unknown as { narratorDb?: Database.Database | null };
 
+// SQLite file, not DATABASE_URL. A top-level migrations/*.sql folder would make
+// Cursor hosting provision Postgres and try to run this dialect there.
+const schemaDir = path.join(process.cwd(), "src", "server", "schema");
+
 export function databasePath(): string {
-  return process.env.DATABASE_PATH || path.join(process.cwd(), "data", "narrator.sqlite");
+  return writableDataFile("narrator.sqlite", process.env.DATABASE_PATH);
 }
 
 export function openDatabase(file: string): Database.Database {
@@ -17,7 +22,7 @@ export function openDatabase(file: string): Database.Database {
   return db;
 }
 
-export function migrate(db: Database.Database, dir = path.join(process.cwd(), "migrations")): void {
+export function migrate(db: Database.Database, dir = schemaDir): void {
   db.exec(
     `CREATE TABLE IF NOT EXISTS schema_migrations (
       id TEXT PRIMARY KEY,

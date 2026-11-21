@@ -43,6 +43,12 @@ export function demoMode(): boolean {
   return process.env.NARRATOR_DEMO === "1";
 }
 
+// The signup response is the only delivery path when Resend is unset.
+// That does not enable demo checkout. Demo checkout still needs both flags.
+export function revealVerificationLink(): boolean {
+  return demoMode() || !process.env.RESEND_API_KEY;
+}
+
 // Demo purchases call the same grant function as Stripe. They stay off when
 // Node is in production unless an operator sets the extra flag on purpose.
 export function demoBillingAllowed(): boolean {

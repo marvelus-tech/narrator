@@ -3,7 +3,7 @@ import { creditsToMilli, PLANS } from "@/shared/economy";
 import { ApiError } from "./errors";
 import { grantCredits } from "./credits";
 import { withTx } from "./db";
-import { hashPassword, newId, randomToken, sha256, siteUrl, verifyPassword } from "./ids";
+import { hashPassword, newId, randomToken, revealVerificationLink, sha256, siteUrl, verifyPassword } from "./ids";
 import { hitRateLimit, rateIdentity } from "./rate";
 
 export type UserRow = {
@@ -158,7 +158,7 @@ export async function signup(
   await maybeResend(email, subject, body);
   return {
     userId,
-    devVerifyUrl: process.env.NARRATOR_DEMO === "1" ? verifyUrl : undefined,
+    devVerifyUrl: revealVerificationLink() ? verifyUrl : undefined,
   };
 }
 
@@ -204,7 +204,7 @@ export async function resendVerification(db: Database, user: UserRow, now = Date
     writeOutbox(db, { userId: user.id, to: user.email, subject, body, now });
   });
   await maybeResend(user.email, subject, body);
-  return { already: false as const, devVerifyUrl: process.env.NARRATOR_DEMO === "1" ? verifyUrl : undefined };
+  return { already: false as const, devVerifyUrl: revealVerificationLink() ? verifyUrl : undefined };
 }
 
 export function login(

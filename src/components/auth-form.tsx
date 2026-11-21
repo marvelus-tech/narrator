@@ -50,7 +50,7 @@ export function AuthForm({ mode, next }: { mode: "login" | "signup"; next?: stri
       {error ? <p className="error" role="alert">{error}</p> : null}
       {verifyUrl ? (
         <p className="panel">
-          Demo mode printed the verification link here. Open it, then go to your projects.
+          Mail is not configured, so the verification link is shown here. Open it, then go to your projects.
           <br />
           <a href={verifyUrl}>Verify email</a>
         </p>

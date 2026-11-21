@@ -45,7 +45,33 @@ describe("routes and metadata", () => {
       for (const file of files) {
         const text = fs.readFileSync(file, "utf8");
         expect(text, file).not.toContain("\u2014");
+        expect(text, file).not.toContain("\u2013");
       }
+    }
+  });
+});
+
+describe("hosted database", () => {
+  it("keeps sqlite schema off the Postgres migrations trigger", () => {
+    expect(fs.existsSync("migrations")).toBe(false);
+    expect(fs.existsSync("cursor-app.json")).toBe(false);
+    expect(fs.existsSync("src/server/schema/001_init.sql")).toBe(true);
+  });
+});
+
+describe("showcase media", () => {
+  it("keeps original frames under the landing byte budget", () => {
+    const dir = "public/showcase";
+    const names = fs.readdirSync(dir);
+    const webp = names.filter((name) => name.endsWith(".webp"));
+    const mp4 = names.filter((name) => name.endsWith(".mp4"));
+    expect(webp.length).toBeGreaterThanOrEqual(6);
+    expect(mp4.length).toBeGreaterThanOrEqual(1);
+    for (const name of webp) {
+      expect(fs.statSync(path.join(dir, name)).size, name).toBeLessThan(80 * 1024);
+    }
+    for (const name of mp4) {
+      expect(fs.statSync(path.join(dir, name)).size, name).toBeLessThan(400 * 1024);
     }
   });
 });

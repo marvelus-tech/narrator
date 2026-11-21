@@ -71,6 +71,21 @@ export const packCards = (Object.keys(PACKS) as (keyof typeof PACKS)[]).map((id)
   };
 });
 
+export const landing = {
+  kicker: "Direction desk",
+  title: "Price the shot before you shoot it.",
+  lede:
+    "One paragraph becomes scenes, shots, and a camera move. You approve the credit price. Narrator makes the still or the clip.",
+  limit:
+    "No dialogue, no score, and no commercial clearance. Clips default to 5 seconds at 480p. 720p is a separate quote. Nothing runs past 10 seconds. A failed job returns the hold.",
+  pipeline: [
+    { n: "01", title: "Brief", body: "One paragraph. Narrator drafts the scenes." },
+    { n: "02", title: "Reference cast", body: "Name the person, the place, and the prop. Eight images each." },
+    { n: "03", title: "Shot strip", body: "Size, angle, move, and five seconds. Edit any line." },
+    { n: "04", title: "Motion take", body: "The quote locks first. A failed job returns the hold." },
+  ],
+};
+
 export const steps = [
   {
     n: "01",
