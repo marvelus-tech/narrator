@@ -72,16 +72,16 @@ export const packCards = (Object.keys(PACKS) as (keyof typeof PACKS)[]).map((id)
 });
 
 export const landing = {
-  kicker: "Nr8tr",
-  title: "Step into the chair. Direct the film in your head.",
-  lede: "Write the prompt. Nr8tr prices the still and the five second clip before a credit moves.",
+  kicker: "AI film direction studio",
+  title: "Direct short films from one brief.",
+  lede: "Type a scene. Lock your cast. Frame every shot and roll motion takes at honest credit rates.",
   limit:
-    "No dialogue, no score, and no commercial clearance. Clips default to 5 seconds at 480p. 720p is a separate quote. Nothing runs past 10 seconds. A failed job returns the hold.",
+    "No dialogue or score. Clips default to 5 seconds at 480p. 720p is a separate quote. A failed job returns the hold.",
   pipeline: [
-    { n: "01", title: "Brief", body: "One paragraph. Nr8tr drafts the scenes." },
-    { n: "02", title: "Reference cast", body: "Name the person, the place, and the prop. Eight images each." },
-    { n: "03", title: "Shot strip", body: "Size, angle, move, and five seconds. Edit any line." },
-    { n: "04", title: "Motion take", body: "The quote locks first. A failed job returns the hold." },
+    { n: "01 / BRIEF", title: "Write the premise.", body: "Two lines set tone, pacing, and visual world." },
+    { n: "02 / CAST LOCK", title: "Pin faces and locations.", body: "Reference frames hold character continuity across cuts." },
+    { n: "03 / SHOT LIST", title: "Call lens and motion.", body: "Set framing and camera movement before a credit moves." },
+    { n: "04 / ROLL & CUT", title: "Approve takes, export the reel.", body: "Failed runs refund automatically. Download an MP4 cut or a shot pack." },
   ],
 };
 

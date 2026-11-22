@@ -1,48 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { HeroPromptComposer } from "@/components/hero-prompt-composer";
-import { creditExamples, landing } from "@/shared/content";
+import { SHOWCASE_FILM, SHOWCASE_STILL } from "@/shared/showcase-film";
+import { landing } from "@/shared/content";
+import { formatCreditUsd, formatCredits, quoteVideo } from "@/shared/economy";
 import { publicAsset } from "@/shared/public-asset";
 import { routes } from "@/shared/routes";
 
-const shots = [
-  {
-    id: "01A",
-    move: "#dolly-in",
-    src: publicAsset("/showcase/shot-01.webp"),
-    alt: "Wide view of a courier in a wet street at dusk",
-  },
-  {
-    id: "02A",
-    move: "#tracking",
-    src: publicAsset("/showcase/shot-02.webp"),
-    alt: "Courier standing in floodwater under sodium lamps",
-  },
-  {
-    id: "03A",
-    move: "#lock-off",
-    src: publicAsset("/showcase/shot-03.webp"),
-    alt: "Hands holding a sealed envelope above dark water",
-  },
-  {
-    id: "04A",
-    move: "#pan-right",
-    src: publicAsset("/showcase/shot-04.webp"),
-    alt: "Courier in a stone doorway with the envelope",
-  },
-] as const;
-
-const moves = ["#dolly-in", "#tracking", "#pan-right", "#lock-off"] as const;
+const cutMs = 3200;
 
 export function CinemaHero() {
-  const draft = creditExamples[1];
+  const stageRef = useRef<HTMLDivElement>(null);
   const [motion, setMotion] = useState<"unknown" | "ok" | "reduce">("unknown");
   const [active, setActive] = useState(0);
-  const shot = shots[active];
-  const playMove = motion === "ok" && active === 0;
+  const [thirds, setThirds] = useState(false);
+  const [cut, setCut] = useState(false);
+  const shot = SHOWCASE_FILM.shots[active];
+  const quote = quoteVideo(shot.resolution, shot.seconds);
+  const price = `${formatCredits(quote.millicredits)} cr · ${formatCreditUsd(quote.millicredits)}`;
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -52,6 +30,28 @@ export function CinemaHero() {
     return () => query.removeEventListener("change", apply);
   }, []);
 
+  useEffect(() => {
+    if (!cut) return;
+    const timer = window.setInterval(() => {
+      setActive((index) => (index + 1) % SHOWCASE_FILM.shots.length);
+    }, cutMs);
+    return () => window.clearInterval(timer);
+  }, [cut]);
+
+  function selectShot(index: number) {
+    setCut(false);
+    setActive(index);
+  }
+
+  function toggleCut() {
+    const next = !cut;
+    if (next) {
+      setActive(0);
+      stageRef.current?.scrollIntoView({ behavior: motion === "ok" ? "smooth" : "auto", block: "center" });
+    }
+    setCut(next);
+  }
+
   return (
     <section className="cinema-hero" aria-labelledby="cinema-title">
       <div className="cinema-copy">
@@ -59,77 +59,94 @@ export function CinemaHero() {
         <h1 id="cinema-title">{landing.title}</h1>
         <p className="lede">{landing.lede}</p>
       </div>
+      <div className="actions cinema-try">
+        <Link className="btn" href={routes.signup}>Direct your first scene</Link>
+        <button type="button" className="btn-ghost" aria-pressed={cut} aria-controls="director-monitor" onClick={toggleCut}>
+          {cut ? "Pause 4-shot cut" : "Play 4-shot cut"}
+        </button>
+      </div>
+      <p className="cinema-free">15 free credits, no card</p>
       <HeroPromptComposer />
-      <div className="cinema-stage">
-        <div className="cinema-monitor" role="region" aria-label="Direction monitor">
+      <div className="cinema-stage" ref={stageRef}>
+        <div className="cinema-monitor" id="director-monitor" role="region" aria-label="Direction monitor">
           <div className="cinema-readout">
-            <span className="cinema-rec">REC 00:00:05:00 · 24 FPS</span>
-            <span className="cinema-quote">
-              {draft.credits} cr · {draft.dollars}
-            </span>
+            <span className="cinema-rec">TC {shot.timecode} · {SHOWCASE_FILM.fps} FPS · {shot.resolution}</span>
+            <span className="cinema-quote">{price}</span>
           </div>
-          <div className="cinema-screen">
-            <Image src={shot.src} alt={shot.alt} fill sizes="(max-width: 860px) 100vw, 760px" priority={active === 0} />
-            {playMove ? (
+          <div className="cinema-screen" data-ratio="2.39:1">
+            <Image
+              src={publicAsset(shot.still)}
+              alt={shot.alt}
+              width={SHOWCASE_STILL.width}
+              height={SHOWCASE_STILL.height}
+              sizes="(max-width: 860px) 100vw, 860px"
+              priority={active === 0}
+            />
+            {motion === "ok" ? (
               <video
+                key={shot.loop}
                 className="cinema-video"
-                src={publicAsset("/showcase/move-preview.mp4")}
-                poster={publicAsset("/showcase/shot-01.webp")}
+                src={publicAsset(shot.loop)}
+                poster={publicAsset(shot.still)}
                 muted
                 playsInline
                 autoPlay
                 loop
                 preload="metadata"
-                aria-label="Muted five second dolly in on the wet street"
+                aria-hidden="true"
               />
             ) : null}
+            {thirds ? <span className="cinema-thirds" aria-hidden="true" /> : <span className="cinema-cross" aria-hidden="true" />}
             <span className="cinema-bracket tl" />
             <span className="cinema-bracket tr" />
             <span className="cinema-bracket bl" />
             <span className="cinema-bracket br" />
-            <span className="cinema-cross" aria-hidden="true" />
           </div>
           <div className="cinema-chips">
-            <span className="cinema-chip cinema-chip-lens">35MM ANAMORPHIC · T2.0</span>
-            {moves.map((move) => {
-              const index = shots.findIndex((item) => item.move === move);
-              const pressed = active === index;
-              return (
-                <button
-                  key={move}
-                  type="button"
-                  className="cinema-chip"
-                  aria-pressed={pressed}
-                  onClick={() => setActive(index)}
-                >
-                  {move}
-                </button>
-              );
-            })}
+            <span className="cinema-chip cinema-chip-lens">{shot.lens} · {shot.stop}</span>
+            {SHOWCASE_FILM.shots.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                className="cinema-chip"
+                aria-pressed={active === index}
+                onClick={() => selectShot(index)}
+              >
+                {item.move}
+              </button>
+            ))}
+            <button type="button" className="cinema-chip" aria-pressed={thirds} onClick={() => setThirds((on) => !on)}>
+              THIRDS
+            </button>
           </div>
           <div className="cinema-strip" role="tablist" aria-label="Shot frames">
-            {shots.map((item, index) => (
+            {SHOWCASE_FILM.shots.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
                 className="cinema-sprocket"
                 role="tab"
                 aria-selected={active === index}
-                onClick={() => setActive(index)}
+                onClick={() => selectShot(index)}
               >
                 <span className="cinema-holes" aria-hidden="true" />
                 <span className="cinema-cell">
-                  <Image src={item.src} alt="" width={1200} height={502} />
-                  <span>{item.id}</span>
+                  <Image src={publicAsset(item.still)} alt="" width={SHOWCASE_STILL.width} height={SHOWCASE_STILL.height} sizes="168px" />
+                  <span>{item.slate}</span>
                 </span>
                 <span className="cinema-holes" aria-hidden="true" />
               </button>
             ))}
           </div>
         </div>
-      </div>
-      <div className="actions cinema-try">
-        <Link className="btn" href={routes.app}>Try it now</Link>
+        <aside className="cinema-pins" aria-label="Pinned references">
+          {SHOWCASE_FILM.refs.map((ref) => (
+            <figure key={ref.id}>
+              <Image src={publicAsset(ref.src)} alt={ref.alt} width={ref.width} height={ref.height} sizes="156px" />
+              <figcaption>{ref.label}</figcaption>
+            </figure>
+          ))}
+        </aside>
       </div>
     </section>
   );
