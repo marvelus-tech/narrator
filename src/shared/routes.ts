@@ -74,9 +74,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.home,
     file: "src/app/page.tsx",
     index: true,
-    title: "Nr8tr | Direct the film in your head",
+    title: "Nr8tr | Direct short films from a single brief",
     description:
-      "Nr8tr turns one film prompt into shots, lenses, and camera moves. See the exact credit price, then render a still or a playable five second clip.",
+      "Direct short films from one brief. Lock cast references, frame every shot, preview exact credit costs upfront, and cut scenes without studio markups.",
   },
   pricing: {
     key: "pricing",

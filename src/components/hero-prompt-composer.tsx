@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthForm } from "@/components/auth-form";
 import { clientHasAuthFlag } from "@/shared/auth-flag";
+import { SHOWCASE_FILM } from "@/shared/showcase-film";
 import { savePending, type PendingPrompt } from "@/shared/pending-prompt";
 import { routes } from "@/shared/routes";
 
 const pagesBuild = process.env.NEXT_PUBLIC_PAGES === "1";
 
 export function HeroPromptComposer() {
-  const [prompt, setPrompt] = useState("A courier runs a sealed letter through a flooded street at night.");
+  const [prompt, setPrompt] = useState(SHOWCASE_FILM.brief);
   const [aspect, setAspect] = useState<PendingPrompt["aspect"]>("2.39:1");
   const [count, setCount] = useState(5);
   const [open, setOpen] = useState(false);
