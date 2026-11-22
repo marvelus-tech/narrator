@@ -24,7 +24,7 @@ describe("local film", () => {
   it("keeps the prompt out of the ffmpeg arguments", () => {
     const args = cinematicArgs(input, "/tmp/nr8r-test.mp4");
     expect(args.join("\n")).not.toContain(input.prompt);
-    expect(args.join("\n")).toContain("NR8R");
+    expect(args.join("\n")).toContain("Nr8tr");
     expect(args).toContain("libx264");
   });
 

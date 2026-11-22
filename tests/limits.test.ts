@@ -37,7 +37,7 @@ describe("abuse controls", () => {
     const prev = process.env.NEXT_PUBLIC_SITE_URL;
     process.env.NEXT_PUBLIC_SITE_URL = "http://localhost:3000";
     expect(sessionCookie("token")).not.toContain("Secure");
-    process.env.NEXT_PUBLIC_SITE_URL = "https://narrator.example";
+    process.env.NEXT_PUBLIC_SITE_URL = "https://nr8tr.example";
     expect(sessionCookie("token")).toContain("Secure");
     if (prev === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
     else process.env.NEXT_PUBLIC_SITE_URL = prev;

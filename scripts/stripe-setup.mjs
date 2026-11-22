@@ -8,12 +8,12 @@ if (!key) {
 
 const stripe = new Stripe(key);
 const catalog = [
-  { env: "STRIPE_PRICE_STARTER", name: "NR8R Starter", cents: 1500, recurring: true, tierId: "starter" },
-  { env: "STRIPE_PRICE_MAKER", name: "NR8R Maker", cents: 2900, recurring: true, tierId: "maker" },
-  { env: "STRIPE_PRICE_STUDIO", name: "NR8R Studio", cents: 5900, recurring: true, tierId: "studio" },
-  { env: "STRIPE_PRICE_PACK_200", name: "NR8R 200 credits", cents: 1000, recurring: false, tierId: "pack_200" },
-  { env: "STRIPE_PRICE_PACK_500", name: "NR8R 500 credits", cents: 2500, recurring: false, tierId: "pack_500" },
-  { env: "STRIPE_PRICE_PACK_1000", name: "NR8R 1000 credits", cents: 5000, recurring: false, tierId: "pack_1000" },
+  { env: "STRIPE_PRICE_STARTER", name: "Nr8tr Starter", cents: 1500, recurring: true, tierId: "starter" },
+  { env: "STRIPE_PRICE_MAKER", name: "Nr8tr Maker", cents: 2900, recurring: true, tierId: "maker" },
+  { env: "STRIPE_PRICE_STUDIO", name: "Nr8tr Studio", cents: 5900, recurring: true, tierId: "studio" },
+  { env: "STRIPE_PRICE_PACK_200", name: "Nr8tr 200 credits", cents: 1000, recurring: false, tierId: "pack_200" },
+  { env: "STRIPE_PRICE_PACK_500", name: "Nr8tr 500 credits", cents: 2500, recurring: false, tierId: "pack_500" },
+  { env: "STRIPE_PRICE_PACK_1000", name: "Nr8tr 1000 credits", cents: 5000, recurring: false, tierId: "pack_1000" },
 ];
 
 for (const item of catalog) {

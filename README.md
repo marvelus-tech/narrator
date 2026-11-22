@@ -1,6 +1,6 @@
-# NR8R
+# Nr8tr
 
-NR8R turns one film brief into an editable shot list, then prices each still and clip before a credit moves.
+Nr8tr turns one film brief into an editable shot list, then prices each still and clip before a credit moves.
 
 A credit has a face value of $0.05. Quotes use a 1.25 markup on the provider cost and round up to 0.1 credit. Monthly plan credits expire at the end of the paid period. Pack credits do not expire. Failed jobs return the hold. A finished file you dislike stays charged.
 
@@ -32,7 +32,7 @@ Open http://localhost:3000.
 npm run seed
 ```
 
-Seed writes a local Maker account, `demo@narrator.local` / `narrator-demo-pass`, with plan credits that expire in 30 days and one sample project. Do not run seed against a production database.
+Seed writes a local Maker account, `demo@nr8tr.local` / `nr8tr-demo-pass`, with plan credits that expire in 30 days and one sample project. Do not run seed against a production database.
 
 In demo mode the signup response includes the verification link. The same link is stored in `data/outbox`. Production does not return that link unless `NARRATOR_DEMO=1`.
 
@@ -51,7 +51,7 @@ npm run build
 
 The app is a Next.js server. It uses SQLite until `DATABASE_URL` is set, then Postgres. `cursor-app.json` asks Cursor Hosting for Postgres, and `npm run build` applies `migrations/`. A separate cron can `POST /api/internal/tick` with `Authorization: Bearer $JOB_TICK_SECRET`.
 
-`NEXT_PUBLIC_BASE_PATH=/narrator npm run build:pages` writes the static GitHub Pages site to `out/`.
+`NEXT_PUBLIC_BASE_PATH=/nr8tr NEXT_PUBLIC_SITE_URL=https://marvelus-tech.github.io/nr8tr npm run build:pages` writes the static GitHub Pages site to `out/`. Canonicals and the sitemap use that site URL. Once Pages is enabled, the live site is https://marvelus-tech.github.io/nr8tr/.
 
 ## Plans
 

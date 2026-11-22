@@ -109,7 +109,7 @@ export function plannerConfigured(): boolean {
 }
 
 const SYSTEM = [
-  "You are the NR8R shot planner. Return one JSON object only.",
+  "You are the Nr8tr shot planner. Return one JSON object only.",
   "Fields: title, palette, lighting, cast [{name, notes}], locations [{name, notes}], shots.",
   "shots length is 4 to 6. Each shot has action, size, angle, movement, lens, focus, lighting, mood, durationSec, soundNote.",
   "lens is one of: 24mm Wide, 35mm Anamorphic, 50mm T1.4, 85mm Portrait.",

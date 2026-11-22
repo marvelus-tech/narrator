@@ -11,7 +11,7 @@ export default function HowPage() {
       <p className="kicker">Workflow</p>
       <h1>From a paragraph to a priced shot.</h1>
       <p className="lede">
-        NR8R is the desk where a brief becomes an editable shot list. It is not a promise of a finished film with dialogue, music, and a cut.
+        Nr8tr is the desk where a brief becomes an editable shot list. It is not a promise of a finished film with dialogue, music, and a cut.
       </p>
       <div className="steps">
         {steps.map((step) => (

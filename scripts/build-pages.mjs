@@ -119,9 +119,9 @@ try {
   write("src/app/app/layout.tsx", appLayout);
   write("src/app/app/page.tsx", studio);
   write("src/app/app/onboarding/page.tsx", onboarding);
-  write("src/app/app/billing/page.tsx", plain("Billing", "billing", "Checkout runs on the NR8R server. This static copy does not charge a card."));
+  write("src/app/app/billing/page.tsx", plain("Billing", "billing", "Checkout runs on the Nr8tr server. This static copy does not charge a card."));
   write("src/app/app/settings/page.tsx", plain("Settings", "settings", "Publishing keys stay on the server. This static copy has no account settings."));
-  write("src/app/app/projects/new/page.tsx", plain("New brief", "newProject", "The planner runs in this browser preview and on the NR8R server."));
+  write("src/app/app/projects/new/page.tsx", plain("New brief", "newProject", "The planner runs in this browser preview and on the Nr8tr server."));
   write("src/app/app/projects/[id]/page.tsx", project);
   write("src/app/login/page.tsx", login);
   execSync("npx next build", {
@@ -131,8 +131,8 @@ try {
       ...process.env,
       NARRATOR_PAGES: "1",
       NEXT_PUBLIC_PAGES: "1",
-      NEXT_PUBLIC_BASE_PATH: process.env.NEXT_PUBLIC_BASE_PATH || "/narrator",
-      NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || "https://marvelus-tech.github.io/narrator",
+      NEXT_PUBLIC_BASE_PATH: process.env.NEXT_PUBLIC_BASE_PATH || "/nr8tr",
+      NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || "https://marvelus-tech.github.io/nr8tr",
     },
   });
   writeFileSync(path.join(root, "out", ".nojekyll"), "");

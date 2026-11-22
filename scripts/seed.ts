@@ -3,8 +3,8 @@ import { getDb } from "../src/server/db";
 import { hashPassword, newId } from "../src/server/ids";
 import { createProject } from "../src/server/projects";
 
-const email = (process.env.DEMO_USER_EMAIL || "demo@narrator.local").toLowerCase();
-const password = process.env.DEMO_USER_PASSWORD || "narrator-demo-pass";
+const email = (process.env.DEMO_USER_EMAIL || "demo@nr8tr.local").toLowerCase();
+const password = process.env.DEMO_USER_PASSWORD || "nr8tr-demo-pass";
 const db = getDb();
 const existing = db.prepare(`SELECT id FROM users WHERE email = ?`).get(email) as { id: string } | undefined;
 if (existing) {

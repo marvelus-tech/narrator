@@ -14,9 +14,9 @@ const display = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
-  title: { default: "NR8R", template: "%s" },
+  title: { default: "Nr8tr", template: "%s" },
   description: "Turn one film prompt into an editable shot list and a priced still or clip.",
-  applicationName: "NR8R",
+  applicationName: "Nr8tr",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

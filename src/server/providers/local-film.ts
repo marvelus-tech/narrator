@@ -101,7 +101,7 @@ export function cinematicArgs(input: GenerateInput, outFile: string): string[] {
     `crop=w=${size.w}:h=${size.h}:${crop}`,
     `scale=${size.w}:${size.h}`,
     `drawbox=x=0:y=0:w=iw:h=8:color=${accent}:t=fill`,
-    `drawtext=fontfile='${font}':text='NR8R':fontcolor=${accent}:fontsize=36:x=28:y=24`,
+    `drawtext=fontfile='${font}':text='Nr8tr':fontcolor=${accent}:fontsize=36:x=28:y=24`,
     `drawtext=fontfile='${font}':text='${label}':fontcolor=0xf4f6f8:fontsize=22:x=28:y=h-48`,
     `format=yuv420p`,
   ].join(",");

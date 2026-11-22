@@ -74,9 +74,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.home,
     file: "src/app/page.tsx",
     index: true,
-    title: "NR8R | Direct the film in your head",
+    title: "Nr8tr | Direct the film in your head",
     description:
-      "NR8R turns one film prompt into shots, lenses, and camera moves. See the exact credit price, then render a still or a playable five second clip.",
+      "Nr8tr turns one film prompt into shots, lenses, and camera moves. See the exact credit price, then render a still or a playable five second clip.",
   },
   pricing: {
     key: "pricing",
@@ -84,9 +84,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.pricing,
     file: "src/app/pricing/page.tsx",
     index: true,
-    title: "Pricing | NR8R credits",
+    title: "Pricing | Nr8tr credits",
     description:
-      "Compare NR8R Free, Starter at $15, Maker at $29, and Studio at $59. Monthly credits expire at period end. Credit packs do not expire at all.",
+      "Compare Nr8tr Free, Starter at $15, Maker at $29, and Studio at $59. Monthly credits expire at period end. Credit packs do not expire at all.",
   },
   how: {
     key: "how",
@@ -94,9 +94,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.how,
     file: "src/app/how-it-works/page.tsx",
     index: true,
-    title: "How NR8R works",
+    title: "How Nr8tr works",
     description:
-      "An NR8R brief becomes scenes, shots, and reference images. You approve a credit price, then a job makes the still or the playable five second clip.",
+      "An Nr8tr brief becomes scenes, shots, and reference images. You approve a credit price, then a job makes the still or the playable five second clip.",
   },
   login: {
     key: "login",
@@ -104,9 +104,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.login,
     file: "src/app/login/page.tsx",
     index: true,
-    title: "Log in | NR8R",
+    title: "Log in | Nr8tr",
     description:
-      "Log in to NR8R to open the cinema studio, edit shot cards, and spend credits only on stills and clips you have already priced and approved today.",
+      "Log in to Nr8tr to open the cinema studio, edit shot cards, and spend credits only on stills and clips you have already priced and approved today.",
   },
   signup: {
     key: "signup",
@@ -114,9 +114,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.signup,
     file: "src/app/signup/page.tsx",
     index: true,
-    title: "Create your NR8R account",
+    title: "Create your Nr8tr account",
     description:
-      "Create an NR8R account to turn a film prompt into a shot plan. Verify your email before the first generation. New accounts receive 15 credits.",
+      "Create an Nr8tr account to turn a film prompt into a shot plan. Verify your email before the first generation. New accounts receive 15 credits.",
   },
   terms: {
     key: "terms",
@@ -124,9 +124,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.terms,
     file: "src/app/terms/page.tsx",
     index: true,
-    title: "Terms of use | NR8R",
+    title: "Terms of use | Nr8tr",
     description:
-      "NR8R terms cover accounts, credits, and generation jobs. Rights in the output follow the model provider. There is no blanket commercial license.",
+      "Nr8tr terms cover accounts, credits, and generation jobs. Rights in the output follow the model provider. There is no blanket commercial license.",
   },
   privacy: {
     key: "privacy",
@@ -134,9 +134,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.privacy,
     file: "src/app/privacy/page.tsx",
     index: true,
-    title: "Privacy | NR8R",
+    title: "Privacy | Nr8tr",
     description:
-      "What NR8R stores: your account email, projects, reference uploads, generated files, and billing identifiers. We do not sell personal information.",
+      "What Nr8tr stores: your account email, projects, reference uploads, generated files, and billing identifiers. We do not sell personal information.",
   },
   refunds: {
     key: "refunds",
@@ -144,9 +144,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.refunds,
     file: "src/app/refunds/page.tsx",
     index: true,
-    title: "Refunds | NR8R",
+    title: "Refunds | Nr8tr",
     description:
-      "Failed NR8R jobs return their reserved credits. A finished file you simply dislike stays charged. Cash refunds cover unspent credits within 7 days.",
+      "Failed Nr8tr jobs return their reserved credits. A finished file you simply dislike stays charged. Cash refunds cover unspent credits within 7 days.",
   },
   app: {
     key: "app",
@@ -154,9 +154,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.app,
     file: "src/app/app/page.tsx",
     index: false,
-    title: "Studio | NR8R",
+    title: "Studio | Nr8tr",
     description:
-      "Your NR8R studio, credit balance, and shot cards live here. Open a prompt, price a still or a clip, and play the take before you export the cut.",
+      "Your Nr8tr studio, credit balance, and shot cards live here. Open a prompt, price a still or a clip, and play the take before you export the cut.",
   },
   newProject: {
     key: "newProject",
@@ -164,9 +164,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.newProject,
     file: "src/app/app/projects/new/page.tsx",
     index: false,
-    title: "New brief | NR8R",
+    title: "New brief | Nr8tr",
     description:
-      "Write one brief and NR8R drafts a shot list you can edit. Choose aspect, film stock, grade, lens family, and lighting before you generate media.",
+      "Write one brief and Nr8tr drafts a shot list you can edit. Choose aspect, film stock, grade, lens family, and lighting before you generate media.",
   },
   project: {
     key: "project",
@@ -174,7 +174,7 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.app,
     file: "src/app/app/projects/[id]/page.tsx",
     index: false,
-    title: "Shot list | NR8R",
+    title: "Shot list | Nr8tr",
     description:
       "Edit shots, attach reference images, and generate a priced still or clip. Video defaults to 480p. Choosing 720p shows a separate higher quote.",
   },
@@ -184,7 +184,7 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.billing,
     file: "src/app/app/billing/page.tsx",
     index: false,
-    title: "Billing | NR8R",
+    title: "Billing | Nr8tr",
     description:
       "See plan credits, pack credits, and expiry dates. Subscribe to Starter, Maker, or Studio, buy a pack, or open the Stripe customer portal anytime.",
   },
@@ -194,9 +194,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.settings,
     file: "src/app/app/settings/page.tsx",
     index: false,
-    title: "Settings | NR8R",
+    title: "Settings | Nr8tr",
     description:
-      "Review your NR8R email, verification status, and plan. Connect Drive, Dropbox, YouTube, X, and TikTok. Publishing stays off the generation path.",
+      "Review your Nr8tr email, verification status, and plan. Connect Drive, Dropbox, YouTube, X, and TikTok. Publishing stays off the generation path.",
   },
   onboarding: {
     key: "onboarding",
@@ -204,9 +204,9 @@ export const pages: Record<PageKey, PageSpec> = {
     canonical: routes.onboarding,
     file: "src/app/app/onboarding/page.tsx",
     index: false,
-    title: "Connect your creative stack | NR8R",
+    title: "Connect your creative stack | Nr8tr",
     description:
-      "Connect Google Drive, Dropbox, YouTube, X, and TikTok right after sign-in. Then open the NR8R studio and run the film prompt you already wrote.",
+      "Connect Google Drive, Dropbox, YouTube, X, and TikTok right after sign-in. Then open the Nr8tr studio and run the film prompt you already wrote.",
   },
 };
 

@@ -21,7 +21,7 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", color: "#ff5000", fontSize: 28, letterSpacing: 4 }}>
-          <div style={{ display: "flex" }}>NR8R</div>
+          <div style={{ display: "flex" }}>Nr8tr</div>
           <div style={{ display: "flex" }}>REC 00:00:05:00</div>
         </div>
         <div style={{ display: "flex", fontSize: 68, lineHeight: 1.05, maxWidth: 980 }}>{landing.title}</div>
