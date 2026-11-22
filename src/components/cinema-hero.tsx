@@ -5,37 +5,37 @@ import Image from "next/image";
 import Link from "next/link";
 import { HeroPromptComposer } from "@/components/hero-prompt-composer";
 import { creditExamples, landing } from "@/shared/content";
+import { publicAsset } from "@/shared/public-asset";
 import { routes } from "@/shared/routes";
 
 const shots = [
   {
     id: "01A",
     move: "#dolly-in",
-    src: "/showcase/shot-01.webp",
+    src: publicAsset("/showcase/shot-01.webp"),
     alt: "Wide view of a courier in a wet street at dusk",
   },
   {
     id: "02A",
     move: "#tracking",
-    src: "/showcase/shot-02.webp",
+    src: publicAsset("/showcase/shot-02.webp"),
     alt: "Courier standing in floodwater under sodium lamps",
   },
   {
     id: "03A",
     move: "#lock-off",
-    src: "/showcase/shot-03.webp",
+    src: publicAsset("/showcase/shot-03.webp"),
     alt: "Hands holding a sealed envelope above dark water",
   },
   {
     id: "04A",
     move: "#pan-right",
-    src: "/showcase/shot-04.webp",
+    src: publicAsset("/showcase/shot-04.webp"),
     alt: "Courier in a stone doorway with the envelope",
   },
 ] as const;
 
 const moves = ["#dolly-in", "#tracking", "#pan-right", "#lock-off"] as const;
-const assetBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export function CinemaHero() {
   const draft = creditExamples[1];
@@ -73,8 +73,8 @@ export function CinemaHero() {
             {playMove ? (
               <video
                 className="cinema-video"
-                src={`${assetBase}/showcase/move-preview.mp4`}
-                poster={`${assetBase}/showcase/shot-01.webp`}
+                src={publicAsset("/showcase/move-preview.mp4")}
+                poster={publicAsset("/showcase/shot-01.webp")}
                 muted
                 playsInline
                 autoPlay

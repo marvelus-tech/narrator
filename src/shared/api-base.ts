@@ -1,4 +1,4 @@
-// Public origin of the full-stack NR8R server. Empty means same origin.
+// Public origin of the full-stack Nr8tr server. Empty means same origin.
 // This is not a secret. NEXT_PUBLIC_ values are visible to every visitor.
 
 export function appOrigin(): string {

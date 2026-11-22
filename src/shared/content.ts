@@ -48,7 +48,7 @@ export const pricingFaq = [
   },
   {
     q: "Who owns the pictures?",
-    a: "Rights follow the provider that made the file. NR8R does not grant a separate commercial-use license. Mock files are samples for trying the product.",
+    a: "Rights follow the provider that made the file. Nr8tr does not grant a separate commercial-use license. Mock files are samples for trying the product.",
   },
 ];
 
@@ -72,13 +72,13 @@ export const packCards = (Object.keys(PACKS) as (keyof typeof PACKS)[]).map((id)
 });
 
 export const landing = {
-  kicker: "NR8R",
+  kicker: "Nr8tr",
   title: "Step into the chair. Direct the film in your head.",
-  lede: "Write the prompt. NR8R prices the still and the five second clip before a credit moves.",
+  lede: "Write the prompt. Nr8tr prices the still and the five second clip before a credit moves.",
   limit:
     "No dialogue, no score, and no commercial clearance. Clips default to 5 seconds at 480p. 720p is a separate quote. Nothing runs past 10 seconds. A failed job returns the hold.",
   pipeline: [
-    { n: "01", title: "Brief", body: "One paragraph. NR8R drafts the scenes." },
+    { n: "01", title: "Brief", body: "One paragraph. Nr8tr drafts the scenes." },
     { n: "02", title: "Reference cast", body: "Name the person, the place, and the prop. Eight images each." },
     { n: "03", title: "Shot strip", body: "Size, angle, move, and five seconds. Edit any line." },
     { n: "04", title: "Motion take", body: "The quote locks first. A failed job returns the hold." },
@@ -89,7 +89,7 @@ export const steps = [
   {
     n: "01",
     title: "Write the brief",
-    body: "One paragraph is enough. NR8R drafts scenes and shots with size, angle, movement, and a five second duration you can edit.",
+    body: "One paragraph is enough. Nr8tr drafts scenes and shots with size, angle, movement, and a five second duration you can edit.",
   },
   {
     n: "02",
@@ -105,11 +105,11 @@ export const steps = [
 
 export const legal = {
   terms: [
-    "NR8R is a planning and generation desk. You write a brief, edit a shot list, and approve a credit price before a still or a clip is made.",
+    "Nr8tr is a planning and generation desk. You write a brief, edit a shot list, and approve a credit price before a still or a clip is made.",
     "You must give a real email and keep your password private. One person, one account. Verified email is required before any generation.",
     "Credits are a prepaid unit with a face value of $0.05. Plan credits expire at the end of the paid period. Pack credits do not expire. Free accounts receive 15 credits once, after email verification.",
-    "A quote is the most you will be charged for that job. If the provider settles lower, the difference is returned. If the provider or NR8R fails the job, the hold is returned. A completed file stays charged.",
-    "Output rights follow the provider that rendered the file. NR8R does not promise that a file is cleared for commercial use, and it does not promise a finished film with dialogue, music, and a cut.",
+    "A quote is the most you will be charged for that job. If the provider settles lower, the difference is returned. If the provider or Nr8tr fails the job, the hold is returned. A completed file stays charged.",
+    "Output rights follow the provider that rendered the file. Nr8tr does not promise that a file is cleared for commercial use, and it does not promise a finished film with dialogue, music, and a cut.",
     "Do not upload images you do not have rights to use. Do not ask for content that is illegal. We may freeze generation and publishing if a card payment is disputed.",
     "Drive and Dropbox publish on every plan when you ask. YouTube, X, and TikTok publish on Maker and Studio. None of them change the credit price.",
     "These terms are the product rules for this app. They are not a substitute for advice from your own lawyer.",
@@ -117,7 +117,7 @@ export const legal = {
   privacy: [
     "We store the email and password hash you use to sign in, a session cookie, and whether the email is verified.",
     "We store projects, shot lists, reference images you upload, and files the generator writes. Uploads are limited in size and type.",
-    "Billing uses Stripe. NR8R stores the Stripe customer id and the credit ledger. Card numbers stay with Stripe.",
+    "Billing uses Stripe. Nr8tr stores the Stripe customer id and the credit ledger. Card numbers stay with Stripe.",
     "If you connect a publishing tool, that request is sent only when you press the button, and only to the integration you configured.",
     "We do not sell personal information. Server logs avoid provider tokens and signed media URLs.",
     "You can stop using the account at any time. Cash refunds of unspent credits follow the refund page.",

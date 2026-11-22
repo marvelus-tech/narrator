@@ -1,5 +1,5 @@
 // Scene-aware shot parser used by the server and the static studio.
-// No network. Lenses and moves stay inside the official NR8R lists.
+// No network. Lenses and moves stay inside the official Nr8tr lists.
 
 export const LENSES = ["24mm Wide", "35mm Anamorphic", "50mm T1.4", "85mm Portrait"] as const;
 export const CAMERA_MOVES = ["#dolly-in", "#tracking", "#pan-right", "#crane-up", "#handheld", "#lock-off"] as const;

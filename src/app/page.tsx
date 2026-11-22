@@ -12,7 +12,7 @@ export default function HomePage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "NR8R",
+    name: "Nr8tr",
     applicationCategory: "MultimediaApplication",
     operatingSystem: "Web",
     offers: { "@type": "Offer", price: "15", priceCurrency: "USD" },

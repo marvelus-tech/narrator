@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { formatCredits, formatCreditUsd, quoteVideo } from "@/shared/economy";
+import { publicAsset } from "@/shared/public-asset";
 
 const cards = [
   {
@@ -8,7 +9,7 @@ const cards = [
     lens: "35mm",
     stop: "T2.8",
     resolution: "480p" as const,
-    src: "/showcase/shot-01.webp",
+    src: publicAsset("/showcase/shot-01.webp"),
     alt: "Wide street frame for a tracking move",
     note: "Camera travels with her. This is the default 5 second 480p quote.",
   },
@@ -18,7 +19,7 @@ const cards = [
     lens: "35mm",
     stop: "T2.0",
     resolution: "480p" as const,
-    src: "/showcase/shot-02.webp",
+    src: publicAsset("/showcase/shot-02.webp"),
     alt: "Medium frame for a dolly in",
     note: "Camera moves closer. Same 5 second 480p quote.",
   },
@@ -28,7 +29,7 @@ const cards = [
     lens: "50mm",
     stop: "T4",
     resolution: "720p" as const,
-    src: "/showcase/shot-04.webp",
+    src: publicAsset("/showcase/shot-04.webp"),
     alt: "Doorway frame for a crane up",
     note: "Camera rises. 720p is the higher quote you choose on purpose.",
   },

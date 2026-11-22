@@ -27,8 +27,8 @@ jobs:
       - run: npm run build:pages
         env:
           NARRATOR_PAGES: "1"
-          NEXT_PUBLIC_BASE_PATH: /narrator
-          NEXT_PUBLIC_SITE_URL: https://marvelus-tech.github.io/narrator
+          NEXT_PUBLIC_BASE_PATH: /nr8tr
+          NEXT_PUBLIC_SITE_URL: https://marvelus-tech.github.io/nr8tr
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

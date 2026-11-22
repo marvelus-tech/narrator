@@ -9,14 +9,14 @@ export function inlinePriceData(body: CheckoutBody) {
       currency: "usd" as const,
       unit_amount: plan.priceCents,
       recurring: { interval: "month" as const },
-      product_data: { name: `NR8R ${plan.name}` },
+      product_data: { name: `Nr8tr ${plan.name}` },
     };
   }
   const pack = PACKS[body.pack];
   return {
     currency: "usd" as const,
     unit_amount: pack.priceCents,
-    product_data: { name: `NR8R ${pack.credits} credits` },
+    product_data: { name: `Nr8tr ${pack.credits} credits` },
   };
 }
 

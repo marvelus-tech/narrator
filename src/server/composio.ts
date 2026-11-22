@@ -353,7 +353,7 @@ export async function publishToToolkit(input: {
           filename: input.filename.slice(0, 120),
           mime: input.mime,
           file_base64: input.bytes.toString("base64"),
-          text: `NR8R export: ${input.filename.slice(0, 80)}`,
+          text: `Nr8tr export: ${input.filename.slice(0, 80)}`,
         },
       }),
     },

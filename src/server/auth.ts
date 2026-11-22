@@ -142,7 +142,7 @@ function writeOutbox(
 async function maybeResend(to: string, subject: string, body: string) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return;
-  const from = process.env.EMAIL_FROM || "NR8R <noreply@example.com>";
+  const from = process.env.EMAIL_FROM || "Nr8tr <noreply@example.com>";
   try {
     await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -168,7 +168,7 @@ export async function signup(
   const userId = newId();
   const token = randomToken();
   const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/auth/verify?token=${token}`;
-  const subject = "Verify your NR8R email";
+  const subject = "Verify your Nr8tr email";
   const body = `Open this link to verify your email and receive 15 credits:\n\n${verifyUrl}\n\nThe link expires in 24 hours.`;
   withTx(db, () => {
     db.prepare(
@@ -219,7 +219,7 @@ export async function resendVerification(db: Database, user: UserRow, now = Date
   hitRateLimit(db, rateIdentity("verify", user.email), 3, 60 * 60 * 1000, now);
   const token = randomToken();
   const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/auth/verify?token=${token}`;
-  const subject = "Verify your NR8R email";
+  const subject = "Verify your Nr8tr email";
   const body = `Open this link to verify your email and receive 15 credits:\n\n${verifyUrl}\n\nThe link expires in 24 hours.`;
   withTx(db, () => {
     db.prepare(`DELETE FROM email_tokens WHERE user_id = ? AND purpose = 'verify'`).run(user.id);

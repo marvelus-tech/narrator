@@ -26,7 +26,7 @@ export function SiteHeader() {
       <div className="wrap bar">
         <Link className="brand" href={routes.home}>
           <Mark />
-          NR8R
+          Nr8tr
         </Link>
         <nav className="nav" aria-label="Primary">
           {headerNav.map((item) => (
@@ -58,7 +58,7 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="wrap footer-grid">
-        <p className="muted">NR8R prices a shot before it spends a credit.</p>
+        <p className="muted">Nr8tr prices a shot before it spends a credit.</p>
         <nav className="nav" aria-label="Footer">
           {footerNav.map((item) => (
             <Link key={item.href} href={item.href}>

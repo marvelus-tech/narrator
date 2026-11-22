@@ -30,7 +30,7 @@ export function StackConnect() {
         if (data.connections) setRows(data.connections);
         else if (data.message) setNote(data.message);
       })
-      .catch(() => setNote("Connections load when you are signed in on the NR8R server."));
+      .catch(() => setNote("Connections load when you are signed in on the Nr8tr server."));
     return () => window.clearTimeout(timer);
   }, []);
 
@@ -66,7 +66,7 @@ export function StackConnect() {
     <div className="studio">
       <p className="kicker">After sign-in</p>
       <h1>Connect your creative stack</h1>
-      <p className="lede">One click starts the Composio connection. Generation and credits stay on NR8R.</p>
+      <p className="lede">One click starts the Composio connection. Generation and credits stay on Nr8tr.</p>
       {prompt ? <p className="muted">Queued prompt: {prompt}</p> : null}
       <div className="stack-grid">
         {TOOLS.map((tool) => {

@@ -10,8 +10,8 @@ export class ApiError extends Error {
 }
 
 const messages: Record<string, string> = {
-  origin_required: "This action has to come from the NR8R site.",
-  origin_mismatch: "This action has to come from the NR8R site.",
+  origin_required: "This action has to come from the Nr8tr site.",
+  origin_mismatch: "This action has to come from the Nr8tr site.",
   invalid_body: "That form could not be read.",
   invalid_email: "Enter a valid email address.",
   weak_password: "Use a password of at least 10 characters.",

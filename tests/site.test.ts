@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { publicAsset } from "@/shared/public-asset";
 import { pages } from "@/shared/routes";
 
 function walk(dir: string, found: string[] = []): string[] {
@@ -48,6 +49,19 @@ describe("routes and metadata", () => {
         expect(text, file).not.toContain("\u2013");
       }
     }
+  });
+});
+
+describe("pages asset prefix", () => {
+  it("prefixes public files with the site base path", () => {
+    const prev = process.env.NEXT_PUBLIC_BASE_PATH;
+    delete process.env.NEXT_PUBLIC_BASE_PATH;
+    expect(publicAsset("/showcase/shot-01.webp")).toBe("/showcase/shot-01.webp");
+    process.env.NEXT_PUBLIC_BASE_PATH = "/nr8tr";
+    expect(publicAsset("/showcase/shot-01.webp")).toBe("/nr8tr/showcase/shot-01.webp");
+    expect(publicAsset("/nr8tr/showcase/shot-01.webp")).toBe("/nr8tr/showcase/shot-01.webp");
+    if (prev === undefined) delete process.env.NEXT_PUBLIC_BASE_PATH;
+    else process.env.NEXT_PUBLIC_BASE_PATH = prev;
   });
 });
 

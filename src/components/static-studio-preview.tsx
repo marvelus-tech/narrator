@@ -43,7 +43,7 @@ function paintFrame(canvas: HTMLCanvasElement, card: Card, prompt: string, t: nu
   ctx.fillText("REC", w - 72, 36);
   ctx.fillStyle = "#f4f6f8";
   ctx.font = "600 32px Arial Narrow, Impact, sans-serif";
-  ctx.fillText("NR8R", 24, 48);
+  ctx.fillText("Nr8tr", 24, 48);
   ctx.font = "16px sans-serif";
   ctx.fillText(`${card.lens}  ${card.movement}`, 24, h - 28);
 }
@@ -158,7 +158,7 @@ export function StaticStudioPreview() {
     for (const card of cards) {
       if (!card.still) continue;
       const b64 = card.still.split(",")[1] ?? "";
-      files[`nr8r-${card.id}.png`] = Uint8Array.from(atob(b64), (char) => char.charCodeAt(0));
+      files[`nr8tr-${card.id}.png`] = Uint8Array.from(atob(b64), (char) => char.charCodeAt(0));
     }
     if (Object.keys(files).length === 0) {
       setError("Generate a frame before the shot pack.");
@@ -168,7 +168,7 @@ export function StaticStudioPreview() {
     const blob = new Blob([zipped], { type: "application/zip" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `nr8r-${Date.now().toString(36)}.zip`;
+    link.download = `nr8tr-${Date.now().toString(36)}.zip`;
     link.click();
   }
 
@@ -243,7 +243,7 @@ export function StaticStudioPreview() {
         })}
       </div>
       {error ? <p className="error" role="alert">{error}</p> : null}
-      <UpgradeModal open={upgrade} onClose={() => setUpgrade(false)} reason="Preview credits live in this browser. A paid plan runs on the NR8R server." />
+      <UpgradeModal open={upgrade} onClose={() => setUpgrade(false)} reason="Preview credits live in this browser. A paid plan runs on the Nr8tr server." />
     </div>
   );
 }
